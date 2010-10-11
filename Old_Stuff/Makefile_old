@@ -1,0 +1,16 @@
+all:
+	nasm -f elf -o Build/loader.o loader.s
+	gcc  kernel.c terminal.h terminal.c -Wall -Wextra -nostdlib -nostartfiles -nodefaultlibs -o Build/kernel.o
+	ld -T linker.ld -o Build/kernel.bin Build/loader.o Build/kernel.o
+	cat stage1 stage2 pad Build/kernel.bin > Build/floppy.img
+
+clean:
+	rm Build/loader.o
+	rm Build/kernel.o
+	rm Build/kernel.bin
+
+run:
+	qemu -fda Build/floppy.img
+
+qemu-run:
+	qemu -kernel kernel.bin
