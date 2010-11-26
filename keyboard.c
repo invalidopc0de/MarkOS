@@ -11,7 +11,8 @@
 unsigned shiftstate = 0;
 unsigned capslock = 0;
 
-unsigned char keyboardBuffer[100];
+unsigned char keyboardBuffer[1024];
+int currentBufPos = 0;
 
 /* KBDUS means US Keyboard Layout. This is a scancode table
 *  used to layout a standard US keyboard. I have left some
@@ -149,12 +150,13 @@ void keyboard_handler(struct regs *r)
     		}
     	}else {
     		if(shiftstate == 0){
-    			putch(kbdus[scancode]);
+    			keyboardBuffer[currentBufPos] = kbdus[scancode];
     		} else if (capslock == 1){
-    			putch(kbdusshift[scancode]);
+    			keyboardBuffer[currentBufPos] = kbdusshift[scancode];
     		} else if (shiftstate == 1) {
-    			putch(kbdusshift[scancode]);
+    			keyboardBuffer[currentBufPos] = kbdusshift[scancode];
     		}
+    		kernel_fire_event(SID_KEYPRESS);
     	}
     }
 }
@@ -163,3 +165,37 @@ void keyboard_install()
 {
 	irq_install_handler(1, keyboard_handler);
 }
+
+void removeFromBuffer(int size)
+{
+	int i;
+	unsigned char tempkeyboard[currentBufPos];
+	memcpy(tempkeyboard, keyboardBuffer, currentBufPos);
+	for(i=0; i < (currentBufPos - size); i++){
+		keyboardBuffer[i] = tempkeyboard[i+size];
+	}
+}
+
+void keyboard_get(int size, int *buffer)
+{
+	if(size > currentBufPos)
+	{
+		size = currentBufPos;
+	}
+	memcpy(buffer, keyboardBuffer, size);
+	removeFromBuffer(size);
+}
+
+char keyboard_getchar()
+{
+	char result;
+	if(!currentBufPos == 0)
+	{
+		result = keyboardBuffer[currentBufPos - 1];
+		removeFromBuffer(1);
+	} else{
+		result = 0;
+	}
+	return result;
+}
+

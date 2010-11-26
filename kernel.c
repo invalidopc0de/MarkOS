@@ -6,7 +6,7 @@
  */
 
 #include "system.h"
-#include "options.h"
+#include "modules/modules.h"
 
 unsigned char *memcpy(unsigned char *dest, const unsigned char *src, int count)
 {
@@ -71,6 +71,11 @@ void outportb (unsigned short _port, unsigned char _data)
     __asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
 }
 
+const int getAppCount()
+{
+	return APP_COUNT;
+}
+
 /* Just to so I can reuse this code... */
 void printDone(void)
 {
@@ -113,17 +118,21 @@ void _main()
 	setDebugLevel(2);
 	printDone();
 
+	puts("Initializing Signal System........");
+	signalhandler_install();
+	printDone();
+
+	puts("Initializing App Modules..........");
+	apps_init();
+	printDone();
+
 
     /* ...and leave this loop in. There is an endless loop in
     *  'start.asm' also, if you accidentally delete this next line */
 
 	puts("Welcome to MarkOS Version E2\n");
 
-	disableDebug();
-
-#ifdef USE_BASIC_SHELL
-
-#endif
+	kernel_fire_event(SID_AFTERBOOT);
 
     for (;;);
 }
