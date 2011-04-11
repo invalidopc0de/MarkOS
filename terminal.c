@@ -6,6 +6,7 @@
  */
 
 #include "system.h"
+#include "stdarg.h"
 
 /* These define our textpointer, our background and foreground
 *  colors (attributes), and x and y cursor coordinates */
@@ -147,6 +148,20 @@ void puts(unsigned char *text)
     {
         putch(text[i]);
     }
+}
+
+/* Implement standardish printf */
+int printk(const char *fmt, ...)
+{
+	va_list args;
+	char * buffer;
+	int i;
+
+	va_start(args, fmt);
+	i = vsprintf(buffer, fmt, args);
+	va_end(args);
+	puts(buffer);
+	return i;
 }
 
 /* Put text in selected Color */

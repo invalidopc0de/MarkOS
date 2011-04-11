@@ -14,9 +14,13 @@ int timer_ticks = 0;
 void timer_phase(int hz)
 {
     int divisor = 1193180 / hz;       /* Calculate our divisor */
+    //puts("Setting Command Byte...\n");
     outportb(0x43, 0x36);             /* Set our command byte 0x36 */
+    //puts("Setting low byte...\n");
     outportb(0x40, divisor & 0xFF);   /* Set low byte of divisor */
+    //puts("Setting high byte...\n");
     outportb(0x40, divisor >> 8);     /* Set high byte of divisor */
+    //puts("Timer phase set.\n");
 }
 
 /* Handles the timer. In this case, it's very simple: We
@@ -41,8 +45,10 @@ void timer_handler(struct regs *r)
 *  into IRQ0 */
 void timer_install()
 {
+	//puts("Setting Timer Phase..\n");
 	timer_phase(100);
     /* Installs 'timer_handler' to IRQ0 */
+	//puts("Installing irq handler..\n");
     irq_install_handler(0, timer_handler);
 }
 

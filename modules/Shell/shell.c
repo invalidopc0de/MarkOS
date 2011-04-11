@@ -8,6 +8,8 @@
 #include "sysmodule.h"
 
 int moduleID;
+char chars[20];
+int current_char = 0;
 
 void signalHandler(int signal)
 {
@@ -16,8 +18,22 @@ void signalHandler(int signal)
 		printf("\nHello Shell!");
 	} else if(signal == SID_KEYPRESS)
 	{
-		printf("KeyPressed\n");
-		printchar(getchar());
+		//printf("KeyPressed\n");
+		char charater = getchar();
+		if(charater == '\n')
+		{
+			printf("Hello, ");
+			printf(chars);
+			printf("\n");
+		} else if (charater == '\b'){
+			current_char--;
+			chars[current_char] = 0;
+		} else {
+			printchar(charater);
+			chars[current_char] = charater;
+			current_char++;
+		}
+
 	}
 }
 

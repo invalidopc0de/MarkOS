@@ -156,6 +156,7 @@ void keyboard_handler(struct regs *r)
     		} else if (shiftstate == 1) {
     			keyboardBuffer[currentBufPos] = kbdusshift[scancode];
     		}
+    		currentBufPos++;
     		kernel_fire_event(SID_KEYPRESS);
     	}
     }
@@ -188,6 +189,7 @@ void keyboard_get(int size, int *buffer)
 
 char keyboard_getchar()
 {
+	// debugMSG("Getting char from keyboard buffer...\n", KEYBOARD_DB_LEVEL);
 	char result;
 	if(!currentBufPos == 0)
 	{

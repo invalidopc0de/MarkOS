@@ -71,6 +71,7 @@ void outportb (unsigned short _port, unsigned char _data)
     __asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
 }
 
+
 const int getAppCount()
 {
 	return APP_COUNT;
@@ -79,9 +80,9 @@ const int getAppCount()
 /* Just to so I can reuse this code... */
 void printDone(void)
 {
-	puts("[");
+	printk("[");
 	putsColor("DONE", 2,0);
-	puts("]\n");
+	printk("]\n");
 }
 
 /* This is a very simple main() function. All it does is sit in an
@@ -93,47 +94,49 @@ void _main()
 	idt_install();
 	init_video();
 
-	puts("Starting ISR Expection Handling...");
+	printk("Starting ISR Expection Handling...");
 	isrs_install();
 	printDone();
 
-	puts("Starting IQR Interupts............");
+	printk("Starting IQR Interupts............");
 	irq_install();
 	__asm__ __volatile__ ("sti");
 	printDone();
 
-	puts("Starting Timers...................");
+	printk("Starting Timers...................");
 	timer_install();
 	printDone();
 
-	puts("Starting Keyboard.................");
+	printk("Starting Keyboard.................");
 	keyboard_install();
 	printDone();
 
-	puts("Enabling Debug Messages...........");
+	printk("Enabling Debug Messages...........");
 	enableDebug();
 	printDone();
 
-	puts("Setting debug level to 2..........");
+	printk("Setting debug level to 2..........");
 	setDebugLevel(2);
 	printDone();
 
-	puts("Initializing Signal System........");
+	printk("Initializing Signal System........");
 	signalhandler_install();
 	printDone();
 
-	puts("Initializing App Modules..........");
+	printk("Initializing App Modules..........");
 	apps_init();
 	printDone();
 
+	printk("Detecting CPU Info................\n");
+	detect_cpu();
+	printDone();
 
-    /* ...and leave this loop in. There is an endless loop in
-    *  'start.asm' also, if you accidentally delete this next line */
-
-	puts("Welcome to MarkOS Version E2\n");
+	printk("\nWelcome to MarkOS Version E2\n");
 
 	kernel_fire_event(SID_AFTERBOOT);
 
+	/* ...and leave this loop in. There is an endless loop in
+	    *  'start.asm' also, if you accidentally delete this next line */
     for (;;);
 }
 
