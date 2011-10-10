@@ -8,6 +8,13 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
+typedef unsigned int	u32int;
+typedef 	 int 	s32int;
+typedef unsigned short  u16int;
+typedef 	 short 	s16int;
+typedef unsigned char	u8int;
+typedef		 char	s8int;
+
 /* MAIN.C */
 extern unsigned char *memcpy(unsigned char *dest, const unsigned char *src, int count);
 extern unsigned char *memset(unsigned char *dest, unsigned char val, int count);
@@ -16,6 +23,7 @@ extern int strlen(const char *str);
 extern unsigned char inportb (unsigned short _port);
 extern void outportb (unsigned short _port, unsigned char _data);
 extern const int getAppCount();
+
 
 /* TERMINAL.C */
 extern void cls();
@@ -59,6 +67,14 @@ extern void keyboard_install();
 extern void keyboard_get(int size, int *buffer);
 extern char keyboard_getchar();
 
+/* SERIAL.C */
+extern void init_serial(int port);
+extern int serial_recieved();
+extern char read_serial();
+extern int is_transmit_empty();
+extern void write_serial(char a);
+
+
 /* DEBUG.C */
 extern void disableDebug();
 extern void enableDebug();
@@ -68,11 +84,11 @@ extern void debugMSG(unsigned char *text, short priority);
 /* SIGNALHANDLER.C */
 #define SID_AFTERBOOT 0
 #define SID_KEYPRESS  1
-#define SID_TIMER	   2
+#define SID_TIMER  2
 
-void signalhandler_install();
-int registerListener(int appID, int signalID, void (*func)(int signal));
-int unregisterListener(int appID, int signalID);
-void kernel_fire_event(int signalID);
+extern void signalhandler_install();
+extern int registerListener(int appID, int signalID, void (*func)(int signal));
+extern int unregisterListener(int appID, int signalID);
+extern void kernel_fire_event(int signalID);
 
 #endif /* SYSTEM_H_ */

@@ -150,6 +150,7 @@ void puts(unsigned char *text)
     }
 }
 
+
 /* Implement standardish printf */
 int printk(const char *fmt, ...)
 {

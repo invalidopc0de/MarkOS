@@ -1,0 +1,479 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+signalHandlers      0x4b0             Build/signalhandler.o
+gp                  0x6               Build/gdt.o
+idtp                0x6               Build/idt.o
+gdt                 0x18              Build/gdt.o
+moduleID            0x4               Build/shell.o
+chars               0x14              Build/shell.o
+keyboardBuffer      0x400             Build/keyboard.o
+idt                 0x800             Build/idt.o
+textmemptr          0x4               Build/terminal.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.eh_frame       0x00000000      0x6a0
+ .eh_frame      0x00000000      0x100 Build/cpudet-clean.o
+ .eh_frame      0x00000100       0x58 Build/debug.o
+                                 0x70 (size before relaxing)
+ .eh_frame      0x00000158       0x30 Build/gdt.o
+                                 0x48 (size before relaxing)
+ .eh_frame      0x00000188       0x30 Build/idt.o
+                                 0x48 (size before relaxing)
+ .eh_frame      0x000001b8       0x74 Build/irq.o
+                                 0x8c (size before relaxing)
+ .eh_frame      0x0000022c       0x34 Build/isr.o
+                                 0x4c (size before relaxing)
+ .eh_frame      0x00000260       0xd8 Build/kernel.o
+                                 0xf0 (size before relaxing)
+ .eh_frame      0x00000338       0x88 Build/keyboard.o
+                                 0xa0 (size before relaxing)
+ .eh_frame      0x000003c0       0x18 Build/modules.o
+                                 0x30 (size before relaxing)
+ .eh_frame      0x000003d8       0xc0 Build/shell.o
+                                 0xd8 (size before relaxing)
+ .eh_frame      0x00000498       0x58 Build/signalhandler.o
+                                 0x70 (size before relaxing)
+ .eh_frame      0x000004f0       0xf4 Build/terminal.o
+                                0x10c (size before relaxing)
+ .eh_frame      0x000005e4       0x64 Build/timer.o
+                                 0x7c (size before relaxing)
+ .eh_frame      0x00000648       0x58 Build/vsprintf.o
+                                 0x70 (size before relaxing)
+
+.text           0x00100000     0x3000
+                0x00100000                code = .
+                0x00100000                _code = .
+                0x00100000                __code = .
+ *(.text)
+ .text          0x00100000      0x214 Build/loader.1o
+                0x00100000                start
+                0x0010002f                gdt_flush
+                0x0010004c                idt_load
+                0x00100054                isr0
+                0x0010005e                isr1
+                0x00100068                isr2
+                0x00100072                isr3
+                0x0010007c                isr4
+                0x00100086                isr5
+                0x00100090                isr6
+                0x0010009a                isr7
+                0x001000a4                isr8
+                0x001000ac                isr9
+                0x001000b6                isr10
+                0x001000be                isr11
+                0x001000c6                isr12
+                0x001000ce                isr13
+                0x001000d3                isr14
+                0x001000d8                isr15
+                0x001000df                isr16
+                0x001000e6                isr17
+                0x001000ed                isr18
+                0x001000f4                isr19
+                0x001000fb                isr20
+                0x00100102                isr21
+                0x00100109                isr22
+                0x00100110                isr23
+                0x00100117                isr24
+                0x0010011e                isr25
+                0x00100125                isr26
+                0x0010012c                isr27
+                0x00100133                isr28
+                0x0010013a                isr29
+                0x00100141                isr30
+                0x00100148                isr31
+                0x00100178                irq0
+                0x0010017f                irq1
+                0x00100186                irq2
+                0x0010018d                irq3
+                0x00100194                irq4
+                0x0010019b                irq5
+                0x001001a2                irq6
+                0x001001a9                irq7
+                0x001001b0                irq8
+                0x001001b7                irq9
+                0x001001be                irq10
+                0x001001c5                irq11
+                0x001001cc                irq12
+                0x001001d3                irq13
+                0x001001da                irq14
+                0x001001e1                irq15
+ .text          0x00100214      0x912 Build/cpudet-clean.o
+                0x00100214                detect_cpu
+                0x00100279                do_intel
+                0x00100793                printregs
+                0x0010084a                do_amd
+ *fill*         0x00100b26        0x2 00
+ .text          0x00100b28       0x78 Build/debug.o
+                0x00100b28                disableDebug
+                0x00100b33                enableDebug
+                0x00100b3e                setDebugLevel
+                0x00100b57                debugMSG
+ .text          0x00100ba0      0x14e Build/gdt.o
+                0x00100ba0                gdt_set_gate
+                0x00100c4b                gdt_install
+ *fill*         0x00100cee        0x2 00
+ .text          0x00100cf0       0xae Build/idt.o
+                0x00100cf0                idt_set_gate
+                0x00100d63                idt_install
+ *fill*         0x00100d9e        0x2 00
+ .text          0x00100da0      0x3af Build/irq.o
+                0x00100da0                irq_install_handler
+                0x00100db0                irq_uninstall_handler
+                0x00100dc0                irq_remap
+                0x00100e8f                irq_install
+                0x001010eb                irq_handler
+ *fill*         0x0010114f        0x1 00
+ .text          0x00101150      0x4f2 Build/isr.o
+                0x00101150                isrs_install
+                0x001015f7                fault_handler
+ *fill*         0x00101642        0x2 00
+ .text          0x00101644      0x261 Build/kernel.o
+                0x00101644                memcpy
+                0x00101684                memset
+                0x001016bb                memsetw
+                0x001016f4                strlen
+                0x0010171e                inportb
+                0x00101749                outportb
+                0x0010176a                getAppCount
+                0x00101770                printDone
+                0x001017ab                _main
+ *fill*         0x001018a5        0x3 00
+ .text          0x001018a8      0x2cc Build/keyboard.o
+                0x001018a8                keyboard_handler
+                0x00101a3c                keyboard_install
+                0x00101a57                removeFromBuffer
+                0x00101af6                keyboard_get
+                0x00101b39                keyboard_getchar
+ .text          0x00101b74       0x2a Build/modules.o
+                0x00101b74                apps_init
+ *fill*         0x00101b9e        0x2 00
+ .text          0x00101ba0      0x1a2 Build/shell.o
+                0x00101ba0                printf
+                0x00101bb3                printchar
+                0x00101bcf                signalListen
+                0x00101bf2                getNextAppID
+                0x00101c13                get
+                0x00101c30                getchar
+                0x00101c3c                signalHandler
+                0x00101ceb                shell_init
+ *fill*         0x00101d42        0x2 00
+ .text          0x00101d44       0xf9 Build/signalhandler.o
+                0x00101d44                signalhandler_install
+                0x00101da9                registerListener
+                0x00101dc3                unregisterListener
+                0x00101ddd                kernel_fire_event
+ *fill*         0x00101e3d        0x3 00
+ .text          0x00101e40      0x3b5 Build/terminal.o
+                0x00101e40                scroll
+                0x00101eec                move_csr
+                0x00101f69                cls
+                0x00101fe1                putch
+                0x001020e9                puts
+                0x00102127                printk
+                0x00102166                putsColor
+                0x001021b1                settextcolor
+                0x001021df                init_video
+ *fill*         0x001021f5        0x3 00
+ .text          0x001021f8       0xd9 Build/timer.o
+                0x001021f8                timer_phase
+                0x00102256                timer_handler
+                0x0010228a                timer_install
+                0x001022b1                timer_wait
+ *fill*         0x001022d1        0x3 00
+ .text          0x001022d4      0x780 Build/vsprintf.o
+                0x001025b1                vsprintf
+                0x00103000                . = ALIGN (0x1000)
+ *fill*         0x00102a54      0x5ac 00
+
+.iplt           0x00103000        0x0
+ .iplt          0x00000000        0x0 Build/cpudet-clean.o
+
+.rel.dyn        0x00103000        0x0
+ .rel.iplt      0x00000000        0x0 Build/cpudet-clean.o
+ .rel.text      0x00000000        0x0 Build/cpudet-clean.o
+
+.data           0x00103000     0x1000
+                0x00103000                data = .
+                0x00103000                _data = .
+                0x00103000                __data = .
+ *(.data)
+ .data          0x00103000        0x0 Build/loader.1o
+ .data          0x00103000       0xc0 Build/cpudet-clean.o
+                0x00103000                Intel
+                0x00103060                Intel_Other
+ .data          0x001030c0        0x2 Build/debug.o
+                0x001030c0                debugLevel
+ *fill*         0x001030c2        0x2 00
+ .data          0x001030c4        0x0 Build/gdt.o
+ .data          0x001030c4        0x0 Build/idt.o
+ .data          0x001030c4        0x0 Build/irq.o
+ *fill*         0x001030c4       0x1c 00
+ .data          0x001030e0       0x80 Build/isr.o
+                0x001030e0                exception_messages
+ .data          0x00103160        0x0 Build/kernel.o
+ .data          0x00103160      0x100 Build/keyboard.o
+                0x00103160                kbdus
+                0x001031e0                kbdusshift
+ .data          0x00103260        0x0 Build/modules.o
+ .data          0x00103260        0x0 Build/shell.o
+ .data          0x00103260        0x0 Build/signalhandler.o
+ .data          0x00103260        0x4 Build/terminal.o
+                0x00103260                attrib
+ .data          0x00103264        0x0 Build/timer.o
+ .data          0x00103264        0x0 Build/vsprintf.o
+ *(.rodata)
+ .rodata        0x00103264      0x61c Build/cpudet-clean.o
+ .rodata        0x00103880      0x158 Build/isr.o
+ .rodata        0x001039d8      0x16f Build/kernel.o
+ .rodata        0x00103b47       0x34 Build/keyboard.o
+ .rodata        0x00103b7b       0x27 Build/shell.o
+ *fill*         0x00103ba2        0x2 00
+ .rodata        0x00103ba4      0x118 Build/vsprintf.o
+                0x00104000                . = ALIGN (0x1000)
+ *fill*         0x00103cbc      0x344 00
+
+.igot.plt       0x00104000        0x0
+ .igot.plt      0x00000000        0x0 Build/cpudet-clean.o
+
+.bss            0x00104000     0x4114
+                0x00104000                bss = .
+                0x00104000                _bss = .
+                0x00104000                __bss = .
+ *(.bss)
+ .bss           0x00104000     0x2000 Build/loader.1o
+ .bss           0x00106000        0x0 Build/cpudet-clean.o
+ .bss           0x00106000        0x4 Build/debug.o
+                0x00106000                debugOn
+ .bss           0x00106004        0x0 Build/gdt.o
+ .bss           0x00106004        0x0 Build/idt.o
+ *fill*         0x00106004       0x1c 00
+ .bss           0x00106020       0x40 Build/irq.o
+                0x00106020                irq_routines
+ .bss           0x00106060        0x0 Build/isr.o
+ .bss           0x00106060        0x0 Build/kernel.o
+ .bss           0x00106060        0xc Build/keyboard.o
+                0x00106060                shiftstate
+                0x00106064                capslock
+                0x00106068                currentBufPos
+ .bss           0x0010606c        0x0 Build/modules.o
+ .bss           0x0010606c        0x8 Build/shell.o
+                0x0010606c                nextAppID
+                0x00106070                current_char
+ .bss           0x00106074        0x0 Build/signalhandler.o
+ .bss           0x00106074        0x8 Build/terminal.o
+                0x00106074                csr_x
+                0x00106078                csr_y
+ .bss           0x0010607c        0x4 Build/timer.o
+                0x0010607c                timer_ticks
+ .bss           0x00106080        0x0 Build/vsprintf.o
+                0x00107000                . = ALIGN (0x1000)
+ *fill*         0x00106080      0xf80 00
+ COMMON         0x00107000       0x1e Build/gdt.o
+                0x00107000                gp
+                0x00107006                gdt
+ *fill*         0x0010701e        0x2 00
+ COMMON         0x00107020      0x820 Build/idt.o
+                0x00107020                idtp
+                0x00107040                idt
+ COMMON         0x00107840      0x400 Build/keyboard.o
+                0x00107840                keyboardBuffer
+ COMMON         0x00107c40       0x18 Build/shell.o
+                0x00107c40                moduleID
+                0x00107c44                chars
+ *fill*         0x00107c58        0x8 00
+ COMMON         0x00107c60      0x4b0 Build/signalhandler.o
+                0x00107c60                signalHandlers
+ COMMON         0x00108110        0x4 Build/terminal.o
+                0x00108110                textmemptr
+                0x00108114                end = .
+                0x00108114                _end = .
+                0x00108114                __end = .
+LOAD Build/loader.1o
+LOAD Build/cpudet-clean.o
+LOAD Build/debug.o
+LOAD Build/gdt.o
+LOAD Build/idt.o
+LOAD Build/irq.o
+LOAD Build/isr.o
+LOAD Build/kernel.o
+LOAD Build/keyboard.o
+LOAD Build/modules.o
+LOAD Build/shell.o
+LOAD Build/signalhandler.o
+LOAD Build/terminal.o
+LOAD Build/timer.o
+LOAD Build/vsprintf.o
+OUTPUT(Build/kernel.bin elf32-i386)
+
+.debug_info     0x00000000     0x1be9
+ .debug_info    0x00000000      0x30a Build/cpudet-clean.o
+ .debug_info    0x0000030a      0x10a Build/debug.o
+ .debug_info    0x00000414      0x193 Build/gdt.o
+ .debug_info    0x000005a7      0x172 Build/idt.o
+ .debug_info    0x00000719      0x247 Build/irq.o
+ .debug_info    0x00000960      0x1ba Build/isr.o
+ .debug_info    0x00000b1a      0x27d Build/kernel.o
+ .debug_info    0x00000d97      0x339 Build/keyboard.o
+ .debug_info    0x000010d0      0x24f Build/shell.o
+ .debug_info    0x0000131f      0x164 Build/signalhandler.o
+ .debug_info    0x00001483      0x2f5 Build/terminal.o
+ .debug_info    0x00001778      0x216 Build/timer.o
+ .debug_info    0x0000198e      0x25b Build/vsprintf.o
+
+.debug_abbrev   0x00000000      0xc12
+ .debug_abbrev  0x00000000      0x104 Build/cpudet-clean.o
+ .debug_abbrev  0x00000104       0x83 Build/debug.o
+ .debug_abbrev  0x00000187       0xc4 Build/gdt.o
+ .debug_abbrev  0x0000024b       0xea Build/idt.o
+ .debug_abbrev  0x00000335      0x12e Build/irq.o
+ .debug_abbrev  0x00000463       0xc2 Build/isr.o
+ .debug_abbrev  0x00000525       0xf9 Build/kernel.o
+ .debug_abbrev  0x0000061e      0x123 Build/keyboard.o
+ .debug_abbrev  0x00000741      0x107 Build/shell.o
+ .debug_abbrev  0x00000848       0xf0 Build/signalhandler.o
+ .debug_abbrev  0x00000938      0x115 Build/terminal.o
+ .debug_abbrev  0x00000a4d       0xd9 Build/timer.o
+ .debug_abbrev  0x00000b26       0xec Build/vsprintf.o
+
+.debug_loc      0x00000000      0xaff
+ .debug_loc     0x00000000      0x204 Build/cpudet-clean.o
+ .debug_loc     0x00000204       0x58 Build/debug.o
+ .debug_loc     0x0000025c       0x58 Build/gdt.o
+ .debug_loc     0x000002b4       0x58 Build/idt.o
+ .debug_loc     0x0000030c       0x84 Build/irq.o
+ .debug_loc     0x00000390       0x58 Build/isr.o
+ .debug_loc     0x000003e8      0x16c Build/kernel.o
+ .debug_loc     0x00000554       0xe8 Build/keyboard.o
+ .debug_loc     0x0000063c      0x160 Build/shell.o
+ .debug_loc     0x0000079c       0x58 Build/signalhandler.o
+ .debug_loc     0x000007f4      0x1bd Build/terminal.o
+ .debug_loc     0x000009b1       0xb0 Build/timer.o
+ .debug_loc     0x00000a61       0x9e Build/vsprintf.o
+
+.debug_aranges  0x00000000      0x1a0
+ .debug_aranges
+                0x00000000       0x20 Build/cpudet-clean.o
+ .debug_aranges
+                0x00000020       0x20 Build/debug.o
+ .debug_aranges
+                0x00000040       0x20 Build/gdt.o
+ .debug_aranges
+                0x00000060       0x20 Build/idt.o
+ .debug_aranges
+                0x00000080       0x20 Build/irq.o
+ .debug_aranges
+                0x000000a0       0x20 Build/isr.o
+ .debug_aranges
+                0x000000c0       0x20 Build/kernel.o
+ .debug_aranges
+                0x000000e0       0x20 Build/keyboard.o
+ .debug_aranges
+                0x00000100       0x20 Build/shell.o
+ .debug_aranges
+                0x00000120       0x20 Build/signalhandler.o
+ .debug_aranges
+                0x00000140       0x20 Build/terminal.o
+ .debug_aranges
+                0x00000160       0x20 Build/timer.o
+ .debug_aranges
+                0x00000180       0x20 Build/vsprintf.o
+
+.debug_line     0x00000000      0x955
+ .debug_line    0x00000000      0x164 Build/cpudet-clean.o
+ .debug_line    0x00000164       0x4c Build/debug.o
+ .debug_line    0x000001b0       0x53 Build/gdt.o
+ .debug_line    0x00000203       0x46 Build/idt.o
+ .debug_line    0x00000249       0xaf Build/irq.o
+ .debug_line    0x000002f8       0xc3 Build/isr.o
+ .debug_line    0x000003bb       0xb3 Build/kernel.o
+ .debug_line    0x0000046e       0xac Build/keyboard.o
+ .debug_line    0x0000051a       0x93 Build/shell.o
+ .debug_line    0x000005ad       0x77 Build/signalhandler.o
+ .debug_line    0x00000624       0xd9 Build/terminal.o
+ .debug_line    0x000006fd       0x73 Build/timer.o
+ .debug_line    0x00000770      0x1e5 Build/vsprintf.o
+
+.debug_str      0x00000000      0x6be
+ .debug_str     0x00000000       0xf9 Build/cpudet-clean.o
+                                0x112 (size before relaxing)
+ .debug_str     0x000000f9       0x8a Build/debug.o
+                                 0xdc (size before relaxing)
+ .debug_str     0x00000183       0x7d Build/gdt.o
+                                0x102 (size before relaxing)
+ .debug_str     0x00000200       0x4e Build/idt.o
+                                 0xe4 (size before relaxing)
+ .debug_str     0x0000024e       0x7e Build/irq.o
+                                 0xdd (size before relaxing)
+ .debug_str     0x000002cc       0x35 Build/isr.o
+                                 0xb9 (size before relaxing)
+ .debug_str     0x00000301       0x76 Build/kernel.o
+                                 0xf9 (size before relaxing)
+ .debug_str     0x00000377       0xc7 Build/keyboard.o
+                                0x150 (size before relaxing)
+ .debug_str     0x0000043e       0xc7 Build/shell.o
+                                0x124 (size before relaxing)
+ .debug_str     0x00000505       0x5a Build/signalhandler.o
+                                 0xd1 (size before relaxing)
+ .debug_str     0x0000055f       0xaa Build/terminal.o
+                                0x133 (size before relaxing)
+ .debug_str     0x00000609       0x56 Build/timer.o
+                                 0xe4 (size before relaxing)
+ .debug_str     0x0000065f       0x5f Build/vsprintf.o
+                                 0xe1 (size before relaxing)
+
+.comment        0x00000000       0x27
+ .comment       0x00000000       0x27 Build/cpudet-clean.o
+                                 0x28 (size before relaxing)
+ .comment       0x00000000       0x28 Build/debug.o
+ .comment       0x00000000       0x28 Build/gdt.o
+ .comment       0x00000000       0x28 Build/idt.o
+ .comment       0x00000000       0x28 Build/irq.o
+ .comment       0x00000000       0x28 Build/isr.o
+ .comment       0x00000000       0x28 Build/kernel.o
+ .comment       0x00000000       0x28 Build/keyboard.o
+ .comment       0x00000000       0x28 Build/modules.o
+ .comment       0x00000000       0x28 Build/shell.o
+ .comment       0x00000000       0x28 Build/signalhandler.o
+ .comment       0x00000000       0x28 Build/terminal.o
+ .comment       0x00000000       0x28 Build/timer.o
+ .comment       0x00000000       0x28 Build/vsprintf.o
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 Build/cpudet-clean.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/debug.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/gdt.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/idt.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/irq.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/isr.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/kernel.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/keyboard.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/modules.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/shell.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/signalhandler.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/terminal.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/timer.o
+ .note.GNU-stack
+                0x00000000        0x0 Build/vsprintf.o

@@ -15,16 +15,20 @@ void signalHandler(int signal)
 {
 	if(signal == SID_AFTERBOOT)
 	{
-		printf("\nHello Shell!");
+		printf("\nHello Shell!\n");
 	} else if(signal == SID_KEYPRESS)
 	{
 		//printf("KeyPressed\n");
 		char charater = getchar();
 		if(charater == '\n')
 		{
+			printf("\n");
 			printf("Hello, ");
 			printf(chars);
 			printf("\n");
+			// FIXME: clear 'chars' variable here
+			current_char = 0;
+			
 		} else if (charater == '\b'){
 			current_char--;
 			chars[current_char] = 0;

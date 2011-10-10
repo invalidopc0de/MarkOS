@@ -3,3 +3,5 @@ FLAGS = -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno
 AFLAGS = -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I../../include/applications -g
 GCC = gcc
 LD = ld
+QEMU = qemu
+QFLAGS = -serial stdio -m 128 

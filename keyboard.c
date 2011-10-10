@@ -117,7 +117,7 @@ void keyboard_handler(struct regs *r)
     	if(kbdus[scancode] == 0x90)
     	{
     		shiftstate = 0;
-    		debugMSG("Shift Off\n", KEYBOARD_DB_LEVEL);
+    		debugMSG("Keyboad Driver: Shift Off\n", KEYBOARD_DB_LEVEL);
     	}
     }
     else
@@ -139,17 +139,17 @@ void keyboard_handler(struct regs *r)
     		puts("\b \b");
     	}else if(kbdus[scancode] == 0x90){
     		shiftstate = 1;
-    		debugMSG("Shift On\n", KEYBOARD_DB_LEVEL);
+    		debugMSG("Keyboard Driver: Shift On\n", KEYBOARD_DB_LEVEL);
     	}else if(kbdus[scancode] == 0x91){
     		if (capslock == 0){
     			capslock = 1;
-    			debugMSG("CapsLock On\n", KEYBOARD_DB_LEVEL);
+    			debugMSG("Keyboard Driver: CapsLock On\n", KEYBOARD_DB_LEVEL);
     		} else if(capslock == 1){
     			capslock = 0;
-    			debugMSG("CapsLock Off\n", KEYBOARD_DB_LEVEL);
+    			debugMSG("Keyboard Driver: CapsLock Off\n", KEYBOARD_DB_LEVEL);
     		}
     	}else {
-    		if(shiftstate == 0){
+    		if(shiftstate == 0 && capslock == 0){
     			keyboardBuffer[currentBufPos] = kbdus[scancode];
     		} else if (capslock == 1){
     			keyboardBuffer[currentBufPos] = kbdusshift[scancode];

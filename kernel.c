@@ -2,10 +2,11 @@
  * kernel2.c
  *
  *  Created on: Oct 3, 2010
- *      Author: mark
+ *      Author: Mark Saunders
  */
 
 #include "system.h"
+#include "multiboot.h"
 #include "modules/modules.h"
 
 unsigned char *memcpy(unsigned char *dest, const unsigned char *src, int count)
@@ -73,7 +74,7 @@ void outportb (unsigned short _port, unsigned char _data)
 
 
 const int getAppCount()
-{
+{	
 	return APP_COUNT;
 }
 
@@ -87,24 +88,37 @@ void printDone(void)
 
 /* This is a very simple main() function. All it does is sit in an
 *  infinite loop. This will be like our 'idle' loop */
-void _main()
+void _main(multiboot_info_t* mbd, unsigned int magic)
 {
     /* You would add commands after here */
 	gdt_install();
 	idt_install();
 	init_video();
 
+	if(magic != MULTIBOOT_BOOTLOADER_MAGIC)
+	{
+		printk("Invalid magic number: 0x%x\n", (unsigned) magic);
+	} 
+
+	if(MULTIBOOT_CHECK_FLAG(mbd->flags, 0))
+		printk("mem_lower = %uKB, mem_upper = %uKB\n",
+		       (unsigned) mbd->mem_lower, (unsigned) mbd->mem_upper);
+
 	printk("Starting ISR Expection Handling...");
 	isrs_install();
 	printDone();
 
-	printk("Starting IQR Interupts............");
+	printk("Starting IRQ Interupts............");
 	irq_install();
 	__asm__ __volatile__ ("sti");
 	printDone();
 
 	printk("Starting Timers...................");
 	timer_install();
+	printDone();
+
+	printk("Initializing Serial COM1..........");
+	init_serial(1);
 	printDone();
 
 	printk("Starting Keyboard.................");
